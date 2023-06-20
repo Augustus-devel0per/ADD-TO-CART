@@ -15,15 +15,11 @@ class CartController extends Controller
     }
 
     public function cartStore(Request $request){
-        // $ticket_idd = $request->input('ticket_id');
-        // $ticket_number = $request->input('ticket_no');
-        // $ticket_amt = $request->input('ticket_amt');
-        // $ticket_qty = $request->input('ticket_qty');
-
-        // dd($ticket_idd, $ticket_number, $ticket_amt, $ticket_qty);
-
         $cartItem = new Cart();
-        $cartItem->user_id = Auth::user();
+
+        // Get ID of the authenticated user ---
+        $cartItem->user_id = Auth::user(); 
+
         $cartItem->ticket_id = $request->input('ticket_id');
         $cartItem->ticket_number = $request->input('ticket_number');
         $cartItem->ticket_price = $request->input('ticket_amount');
