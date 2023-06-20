@@ -14,6 +14,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6 offset-md-3">
+
+                <!-- PARENT DIV --- with class of "ticket_data"-->
                 <div class="card ticket_data">
                     <div class="card-header">
                         <h2>Single Ticket   
@@ -29,23 +31,28 @@
                         <img src="{{ asset('images') }}/{{ $ticket->ticket_image }}" class="card-img-top" style="width:18rem;" alt="...">
                         <div class="shadow ticket_data" style="width: 18rem; border:1px solid #bdbdbd; padding:10px;">
 
-
+                            {{-- THIS ARE MY INPUTS FIELD FOR THE REQUEST --}}
                             <input type="hidden" class="ticket_id" value="{{ $ticket->id }}">
                             <input type="hidden" class="ticket_no" value="{{ $ticket->ticket_number }}">
                             <input type="hidden" class="ticket_amt" value="{{ $ticket->amount }}">
 
 
+                            <!-- THESE DATAS ARE COMING FROM DATABASE, ----So you have to create a database and connect in the "ENV" file and run migration then test the code -->
                             <h5 class="card-title">{{ $ticket->title }} #{{ $ticket->ticket_number }}</h5>
                             <p class="card-text">{{ $ticket->description }}</p> 
                             <p class="card-text">Location: {{ $ticket->location }}</p> 
                             <p class="card-text">Amount: {{ $ticket->amount }}</p> 
                             <p class="card-text">Status: {{ $ticket->status }}</p> 
                             <p class="card-text">Date: {{ $ticket->date }}</p> 
+                            
+                            <!-- CART QUANTITY ITEM INCREMENT AND DECREMENT BUTTON                          -->
                             <div class="quantity input-group text-center mb-3" style="width:130px;">
                                 <button class="input-group-text decrement-btn">-</button>
                                 <input type="text" name="quantity" class="qty_input form-control text-center" value="1">
                                 <button class="input-group-text increment-btn">+</button>
                             </div>
+                            
+                            <!--  ADD TO CART BUTTON -->
                             <button class="btn btn-success addToCartBtn"><i class="bi bi-cart4" style="font-size: 1.3rem;"></i> ADD TO CART</button>
                         </div>
                     </div>
@@ -72,17 +79,23 @@
                 //     'ticket_quantity': $('.qty_input').val()
                 // }
 
+                // NOTE: THE "ticket_data" is coming from the parent div above.
+
                 var ticket_id = $(this).closest('.ticket_data').find('.ticket_id').val();
                 var ticket_number = $(this).closest('.ticket_data').find('.ticket_no').val();
                 var ticket_amount = $(this).closest('.ticket_data').find('.ticket_amt').val();
                 var ticket_quantity = $(this).closest('.ticket_data').find('.qty_input').val();
 
+                // NOTE: THE "ticket_data" is coming from the parent div.
+
+                // LARAVEL AJAX CSRF TOKEN GOTTEN FROM LARAVEL DOCUMENTATION
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
 
+                // AJAX REQUEST
                 $.ajax({
                     type: 'POST',
                     url: 'http://127.0.0.1:8000/insert-to-cart',
